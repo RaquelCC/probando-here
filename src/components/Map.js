@@ -81,6 +81,7 @@ export default class Map extends React.Component {
           
           // Define a callback function to process the routing response:
           this.onResult = result => {
+            console.log(result)
             var route,
               routeShape,
               startPoint,
