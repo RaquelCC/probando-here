@@ -40,7 +40,7 @@ export default class App extends React.Component {
           });
         },
         (error) => {
-          alert(error.message)
+          // alert(error.message)
           this.setState(
           {error: error.message}
           )
@@ -81,7 +81,8 @@ export default class App extends React.Component {
     this.routeSummary = await fetch("https://route.api.here.com/routing/7.2/calculateroute.json?app_id=" + this.state.app_id + "&app_code=" + this.state.app_code + "&waypoint0=geo!" + this.startingPoint.lat + "," + this.startingPoint.long + "&waypoint1=geo!" + this.endingPoint.lat + "," + this.endingPoint.long + "&mode=fastest;pedestrian;traffic:disabled")
       .then(data => data.json())
       .then(data => {
-
+        // console.log("https://route.api.here.com/routing/7.2/calculateroute.json?app_id=" + this.state.app_id + "&app_code=" + this.state.app_code + "&waypoint0=geo!" + this.startingPoint.lat + "," + this.startingPoint.long + "&waypoint1=geo!" + this.endingPoint.lat + "," + this.endingPoint.long + "&mode=fastest;pedestrian;traffic:disabled")
+        // console.log(data)
         return data.response.route[0].summary
       })
 
