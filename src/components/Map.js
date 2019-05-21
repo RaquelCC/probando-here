@@ -1,4 +1,5 @@
 import React from 'react';
+// import { Marker } from 'react-leaflet';
 
 export default class Map extends React.Component {
   constructor(props) {
@@ -20,6 +21,10 @@ export default class Map extends React.Component {
       theme: props.theme,
       style: props.style,
     }
+    
+    this.markers = []
+
+    
   }
 
 
@@ -65,8 +70,16 @@ export default class Map extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.props.startingPoint && this.props.endingPoint) {
-      console.log("props!")
+    if (this.props.marker && this.markers.indexOf(this.props.marker) === -1) {
+    
+        this.newMarker = new window.H.map.Marker({
+          lat: this.props.marker.lat,
+          lng: this.props.marker.long
+        });
+        this.map.addObjects([this.newMarker])
+    }
+    if (this.props.startingPoint.lat !== "" && this.props.endingPoint.lat !== "") {
+      // console.log("props!")
       if (this.routeLine) {
         this.map.removeObjects([this.routeLine, this.startMarker, this.endMarker]);
       }
@@ -150,9 +163,12 @@ export default class Map extends React.Component {
     }
   }
 
+  
+
   render() {
     return (
-      <div ref="here-map" style={{ width: '100%', height: '400px', background: 'grey' }} />
+      <div ref="here-map" style={{ width: '100%', height: '400px', background: 'grey' }}>
+      </div>
     );
   }
 }

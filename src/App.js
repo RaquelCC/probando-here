@@ -4,6 +4,7 @@ import './App.css';
 import Map from './components/Map';
 import ThemeSelector from './components/ThemeSelector';
 import GeocoordinateGetter from './components/GeocoordinateGetter';
+import AddMarker from './components/AddMarker';
 
 
 export default class App extends React.Component {
@@ -22,10 +23,12 @@ export default class App extends React.Component {
         lat: '',
         long: '',
       },
+      marker: null,
     }
 
     this.onChange = this.onChange.bind(this);
     this.getCoordinates = this.getCoordinates.bind(this);
+    this.getMarker = this.getMarker.bind(this);
   }
 
   componentDidMount() {
@@ -34,18 +37,37 @@ export default class App extends React.Component {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           this.setState({
-            lat: position.coords.latitude, 
+            ...this.state,
+            lat: position.coords.latitude,
             long: position.coords.longitude,
             error: null,
           });
         },
         (error) => {
           // alert(error.message)
-          this.setState(
-          {error: error.message}
-          )
+          this.setState({
+            ...this.state,
+            error: error.message
+          })
         }
       );
+    }
+  }
+
+  getMarker(marker) {
+    if (marker) {
+    fetch("https://geocoder.api.here.com/6.2/geocode.json?app_id=" + this.state.app_id + "&app_code=" + this.state.app_code + "&searchtext=" + marker)
+      .then(data => data.json())
+      .then(data => {
+        this.setState({
+          ...this.state,
+          marker: {
+            lat: data.Response.View[0].Result[0].Location.NavigationPosition[0].Latitude,
+            long: data.Response.View[0].Result[0].Location.NavigationPosition[0].Longitude,
+            address: data.Response.View[0].Result[0].Location.Address.Label,
+          }
+        })
+      })
     }
   }
 
@@ -120,10 +142,14 @@ export default class App extends React.Component {
           theme={this.state.theme}
           startingPoint={this.state.startingPoint}
           endingPoint={this.state.endingPoint}
+          marker={this.state.marker}
         />
         <ThemeSelector changeTheme={this.onChange} />
         <GeocoordinateGetter
           getCoordinates={this.getCoordinates}
+        />
+        <AddMarker
+        getMarker={this.getMarker}
         />
 
         <div>{this.state.lat ? this.state.lat : "nada"}</div>
