@@ -5,24 +5,25 @@ export default class Map extends React.Component {
   constructor(props) {
     super(props);
 
-    this.platform = null;
-    this.map = null;
-
+    
     this.state = {
       app_id: props.app_id,
       app_code: props.app_code,
       useHTTPS: true,
       // useCIT: true,
-      center: {
-        lat: props.lat,
-        lng: props.lng,
-      },
+      // center: {
+      //   lat: props.lat,
+      //   lng: props.lng,
+      // },
       zoom: props.zoom,
       theme: props.theme,
       style: props.style,
     }
     
-    this.markers = []
+    this.platform = null;
+    this.map = null;
+    this.markers = [];
+    this.currentPosition = {}
 
     
   }
@@ -57,7 +58,10 @@ export default class Map extends React.Component {
     var container = this.refs["here-map"];
 
     this.map = new window.H.Map(container, layer.normal.map, {
-      center: this.state.center,
+      center: {
+        lat: this.props.lat,
+        lng: this.props.lng
+      },
       zoom: this.state.zoom,
     })
 
@@ -66,6 +70,12 @@ export default class Map extends React.Component {
     var behavior = new window.H.mapevents.Behavior(events);
     // eslint-disable-next-line
     var ui = new window.H.ui.UI.createDefault(this.map, layer)
+    // this.map.removeObjects([this.currentPosition])
+    this.currentPosition = new window.H.map.Marker({
+      lat: this.props.lat,
+      lng: this.props.lng
+    })
+    this.map.addObjects([this.currentPosition])
 
   }
 

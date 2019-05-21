@@ -33,13 +33,13 @@ export default class App extends React.Component {
 
   componentDidMount() {
     if (navigator.geolocation) {
-      console.log(navigator.geolocation)
+      // console.log(navigator.geolocation)
       navigator.geolocation.getCurrentPosition(
         (position) => {
           this.setState({
             ...this.state,
             lat: position.coords.latitude,
-            long: position.coords.longitude,
+            lng: position.coords.longitude,
             error: null,
           });
         },
@@ -136,8 +136,8 @@ export default class App extends React.Component {
         <Map
           app_id={this.state.app_id}
           app_code={this.state.app_code}
-          lat="-33.4489"
-          lng="-70.6693"
+          lat={this.state.lat ? this.state.lat : "-33.4489"}
+          lng={this.state.lng ? this.state.lng : "-70.6693"}
           zoom="12"
           theme={this.state.theme}
           startingPoint={this.state.startingPoint}
@@ -153,7 +153,7 @@ export default class App extends React.Component {
         />
 
         <div>{this.state.lat ? this.state.lat : "nada"}</div>
-        <div>{this.state.long ? this.state.long : "nada"}</div>
+        <div>{this.state.lng ? this.state.lng : "nada"}</div>
 
       </div>
     );
