@@ -23,7 +23,7 @@ export default class Map extends React.Component {
     this.platform = null;
     this.map = null;
     this.markers = [];
-    this.currentPosition = {}
+    this.currentPosition = false;
 
     
   }
@@ -71,15 +71,33 @@ export default class Map extends React.Component {
     // eslint-disable-next-line
     var ui = new window.H.ui.UI.createDefault(this.map, layer)
     // this.map.removeObjects([this.currentPosition])
+    if(this.currentPosition) {
+      console.log(this.currentPosition)
+      this.map.removeObjects([this.currentPosition])
+    }
     this.currentPosition = new window.H.map.Marker({
       lat: this.props.lat,
       lng: this.props.lng
     })
+    // this.probando = new window.H.map.Marker({
+    //   lat: "-33.44384",
+    //   lng: "-70.60357119999999"
+    // })
     this.map.addObjects([this.currentPosition])
 
   }
 
   componentDidUpdate() {
+    if(this.currentPosition) {
+      // console.log(this.currentPosition)
+      this.map.removeObjects([this.currentPosition])
+      this.currentPosition = new window.H.map.Marker({
+        lat: this.props.lat,
+        lng: this.props.lng
+      })
+      this.map.addObjects([this.currentPosition])
+
+    }
     if (this.props.marker && this.markers.indexOf(this.props.marker) === -1) {
     
         this.newMarker = new window.H.map.Marker({

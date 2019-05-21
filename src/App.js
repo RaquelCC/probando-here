@@ -52,22 +52,41 @@ export default class App extends React.Component {
         }
       );
     }
+    // fetch("https://pos.api.here.com/positioning/v1/locate?app_id=" + this.state.app_id + "&app_code=" + this.state.app_code, {
+    //   method: "POST",
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     "gsm": [{
+    //     "mcc": 262,
+    //     "mnc": 1,
+    //     "lac": 5126,
+    //     "cid": 21857
+    //     }],
+    //     "wlan": [
+    //       {"mac": "88-b1-11-0c-df-5f"}
+    //       ]
+    //   })
+    // })
+    // .then(data => data.json())
+    // .then(console.log)
   }
 
   getMarker(marker) {
     if (marker) {
-    fetch("https://geocoder.api.here.com/6.2/geocode.json?app_id=" + this.state.app_id + "&app_code=" + this.state.app_code + "&searchtext=" + marker)
-      .then(data => data.json())
-      .then(data => {
-        this.setState({
-          ...this.state,
-          marker: {
-            lat: data.Response.View[0].Result[0].Location.NavigationPosition[0].Latitude,
-            long: data.Response.View[0].Result[0].Location.NavigationPosition[0].Longitude,
-            address: data.Response.View[0].Result[0].Location.Address.Label,
-          }
+      fetch("https://geocoder.api.here.com/6.2/geocode.json?app_id=" + this.state.app_id + "&app_code=" + this.state.app_code + "&searchtext=" + marker)
+        .then(data => data.json())
+        .then(data => {
+          this.setState({
+            ...this.state,
+            marker: {
+              lat: data.Response.View[0].Result[0].Location.NavigationPosition[0].Latitude,
+              long: data.Response.View[0].Result[0].Location.NavigationPosition[0].Longitude,
+              address: data.Response.View[0].Result[0].Location.Address.Label,
+            }
+          })
         })
-      })
     }
   }
 
@@ -149,7 +168,7 @@ export default class App extends React.Component {
           getCoordinates={this.getCoordinates}
         />
         <AddMarker
-        getMarker={this.getMarker}
+          getMarker={this.getMarker}
         />
 
         <div>{this.state.lat ? this.state.lat : "nada"}</div>
